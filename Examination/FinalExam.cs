@@ -1,64 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Examination;
+using System.Xml.Linq;
 
-namespace Examination
+internal class FinalExam<T> : Exam<T> where T : Question
 {
-    internal class FinalExam : Exam<T> where T : Question
+    public FinalExam(string name, TimeSpan duration, string subject, int numberOfQuestions)
+        : base(duration, subject, numberOfQuestions)
     {
-        public FinalExam(TimeSpan duration, string subject, int numberOfQuestions)
-            : base(duration, subject, numberOfQuestions) { }
-
-        public override void ShowExam()
-        {
-            int totalScore = 0;
-            Dictionary<T, int[]> studentAnswers = new Dictionary<T, int[]>();
-
-
-            Console.WriteLine($"Final Exam for {subject}");
-            Console.WriteLine($"Number of Questions: {NumberOfQuestions}");
-            Console.WriteLine($"Duration: {Duration}\n");
-
-
-            foreach (var q in QuestionAnswers)
-            {
-                T question = q.Key;
-                AnswerList answers = q.Value;
-                question.ShowQuestion();
-
-                int[] userChoices = ReadAnswers(answers.Count);
-                studentAnswers.Add(question, userChoices);
-                Console.WriteLine();
-
-            }
-
-            foreach(var ans in studentAnswers)
-            {
-                T question = ans.Key;
-                // answers_of_that_question|| question dic[0] , dic[key] => question itself
-                AnswerList answers = QuestionAnswers[question];
-                int [] answered_input = ans.Value;
-                bool correct = true;
-
-                if (question is TrueFalseQuestion || question is ChooseOneQuestion)
-                {
-                    // ensure that only one answer here 
-                    if (answered_input.Length == 1 && answers[answered_input[0] - 1].IsCorrect)
-                    {
-                        totalScore += question.Marks;
-                    }
-                }
-                else if (question is ChooseAllQuestion)
-                {
-                    totalScore += CalculateChooseAllScore(answers, answered_input, question.Marks);
-                    
-                }
-                Console.WriteLine();
-
-            }
-            Console.WriteLine($"Total Score is : {totalScore}");
-
-        }
+        Name = name;
     }
+
+    // 🛡 الميثود للتحقق من الإجابة
+    protected bool ValidateAndCheckAnswer(AnswerList answers, int[] userChoices)
+    {
+        if (userChoices.Length == 0)
+        {
+            Console.WriteLine("⚠️ You must choose at least one answer!");
+            return false;
+        }
+
+        int choice = userChoices[0];
+        if (choice < 1 || choice > answers.Count)
+        {
+            Console.WriteLine("⚠️ Invalid choice! Try again.");
+            return false;
+        }
+
+        return answers[choice - 1].IsCorrect;
+    }
+
+    public override void ShowExam()
+    {
+        Console.WriteLine($"Final Exam for {Subject}");
+        Console.WriteLine($"Number of Questions: {NumberOfQuestions}");
+        Console.WriteLine($"Duration: {Duration}\n");
+
+        int totalScore = 0;
+
+        foreach (var entry in QuestionAnswers)
+        {
+            T question = entry.Key;
+            AnswerList answers = entry.Value;
+
+            question.ShowQuestion();
+
+            
+            for (int i = 0; i < answers.Count; i++)
+                Console.WriteLine($"{i + 1}. {answers[i].Body}");
+
+            int[] userChoices;
+            bool correct;
+
+            if (question is TrueFalseQuestion || question is ChooseOneQuestion)
+            {
+              
+                do
+                {
+                    userChoices = ReadAnswers(answers.Count);
+                    correct = ValidateAndCheckAnswer(answers, userChoices);
+                } while (userChoices.Length == 0 || (userChoices[0] < 1 || userChoices[0] > answers.Count));
+
+                if (correct)
+                    totalScore += question.Marks;
+
+            }
+            else if (question is ChooseAllQuestion)
+            {
+                userChoices = ReadAnswers(answers.Count);
+                int score = CalculateChooseAllScore(answers, userChoices, question.Marks);
+                totalScore += score;
+                Console.WriteLine($"You scored: {score} / {question.Marks}");
+            }
+
+            Console.WriteLine();
+        }
+
+        Console.WriteLine($"Total Score: {totalScore} / {QuestionAnswers.Sum(q => q.Key.Marks)}");
+    }
+}

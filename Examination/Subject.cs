@@ -13,11 +13,7 @@ namespace Examination
 
         public Subject(string name) => Name = name;
 
-        public Subject(string name)
-        {
-            Name = name;
-            Exams = new List<Exam<Question>>(); 
-        }
+        
         public void AddExam(Exam<Question> exam)
         {
             Exams.Add(exam);

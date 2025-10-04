@@ -36,9 +36,9 @@ namespace Examination
             }
 
         }
-        public override int GetHashCode() => return Body.GetHashCode(); 
-        public int CompareTo(Question other)=>return this.Marks.CompareTo(other.Marks); // compare to should return int
-        public override string ToString() => return $"{Header}: {Body} ({Marks} Marks)";
+        public override int GetHashCode() =>Body.GetHashCode(); 
+        public int CompareTo(Question other)=>this.Marks.CompareTo(other.Marks); // compare to should return int
+        public override string ToString() =>$"{Header}: {Body} ({Marks} Marks)";
         public override bool Equals(object obj)
         {
             if (obj is Question q)

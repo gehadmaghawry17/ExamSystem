@@ -1,0 +1,15 @@
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.AssemblyInfoInputs.cache
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.AssemblyInfo.cs
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.csproj.CoreCompileInputs.cache
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.sourcelink.json
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\bin\Debug\net8.0\Examination.exe
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\bin\Debug\net8.0\Examination.deps.json
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\bin\Debug\net8.0\Examination.runtimeconfig.json
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\bin\Debug\net8.0\Examination.dll
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\bin\Debug\net8.0\Examination.pdb
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.dll
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\refint\Examination.dll
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.pdb
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\Examination.genruntimeconfig.cache
+C:\Users\gghdmghwry\Desktop\Projects\Examination\Examination\obj\Debug\net8.0\ref\Examination.dll

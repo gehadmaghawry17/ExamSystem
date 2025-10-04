@@ -1,50 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Examination;
+using System.Xml.Linq;
 
-namespace Examination
+internal class PracticalExam<T> : Exam<T> where T : Question
 {
-    internal class PracticalExam : Exam<T> where T : Question
-    {
-        public PracticalExam(TimeSpan duration, string subject, int numberOfQuestions)
+    public PracticalExam(string name, TimeSpan duration, string subject, int numberOfQuestions)
         : base(duration, subject, numberOfQuestions)
+    {
+        Name = name;
+    }
+
+    protected bool ValidateAndCheckAnswer(AnswerList answers, int[] userChoices)
+    {
+        if (userChoices.Length == 0)
         {
+            Console.WriteLine("You must choose at least one answer!");
+            return false;
         }
 
-        public override void ShowExam()
+        int choice = userChoices[0];
+        if (choice < 1 || choice > answers.Count)
         {
-            Console.WriteLine($"Practice Exam for {subject}");
-            Console.WriteLine($"Number of Ques: {NumberOfQuestions}");
-            Console.WriteLine($"Duration: {Duration}\n");
+            Console.WriteLine("Invalid choice! Try again.");
+            return false;
+        }
 
-            foreach(var q in QuestionAnswers) //Dictionary in Exam class
+        return answers[choice - 1].IsCorrect;
+    }
+
+    public override void ShowExam()
+    {
+        Console.WriteLine($"Practice Exam for {Subject}");
+        Console.WriteLine($"Number of Ques: {NumberOfQuestions}");
+        Console.WriteLine($"Duration: {Duration}\n");
+
+        foreach (var entry in QuestionAnswers)
+        {
+            T question = entry.Key;
+            AnswerList answers = entry.Value;
+
+            question.ShowQuestion();
+
+            for (int i = 0; i < answers.Count; i++)
+                Console.WriteLine($"{i + 1}. {answers[i].Body}");
+
+            int[] userChoices;
+            bool correct;
+
+            do
             {
-                T question = q.Key;
-                AnswerList answers = q.Value;
-
-                question.ShowQuestion();//T =>Question || Dict (Question,anserlist)key = Question object
-
-                int[] userChoices = ReadAnswers(answers.Count);
-
-                if (question is TrueFalseQuestion || question is ChooseOneQuestion)
-                {
-                    Console.Write("choose Your answer: ");
-                    string usrAnswr = Console.ReadLine();
-                    bool correct = answers[userChoices[0] - 1].IsCorrect;
-                    Console.WriteLine(correct?" Correct ": " Wrong ");
-
-                }
-                else if (question is ChooseAllQuestion)
-                {
-                    int score = CalculateChooseAllScore(answers, userChoices, question.Marks);
-                    Console.WriteLine($"You scored: {score} / {question.Marks}");
-                }
-
-                Console.WriteLine();
-
+                userChoices = ReadAnswers(answers.Count);
+                correct = ValidateAndCheckAnswer(answers, userChoices);
             }
+            while (userChoices.Length == 0 || (userChoices[0] < 1 || userChoices[0] > answers.Count));
+
+            Console.WriteLine(correct ? "Correct!" : "Wrong!");
+            Console.WriteLine();
         }
     }
 }
