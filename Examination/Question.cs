@@ -21,21 +21,31 @@ namespace Examination
             Answers = new List<Answer>();
         }
         public abstract void DisplayQuestion();
-
+        public abstract object Clone();
         public void ShowQuestion()
-        { 
-        
-        }
+        {
+            Console.WriteLine($"Header: {Header}");
+            Console.WriteLine($"Question: {Body}");
+            Console.WriteLine($"Marks: {Marks}");
 
-        public object Clone()
-        {
-            Question clone = (Question)this.MemberwiseClone();
-            clone 
-            return clone;
+            if (Answers != null && Answers.Count > 0)
+            { Console.WriteLine("Answers : "); }
+            for(int i =0;i<Answers.Count; i++)
+            {
+                Console.WriteLine($"{i+1}. {Answers[i].Body}");
+            }
+
         }
-        public int CompareTo(Question other)
+        public override int GetHashCode() => return Body.GetHashCode(); 
+        public int CompareTo(Question other)=>return this.Marks.CompareTo(other.Marks); // compare to should return int
+        public override string ToString() => return $"{Header}: {Body} ({Marks} Marks)";
+        public override bool Equals(object obj)
         {
-           
+            if (obj is Question q)
+                return this.Body.Equals(q.Body); 
+            
+            return false;
         }
+        
     }
 }

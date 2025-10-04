@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Examination
 {
-    internal class Answer
+    internal class Answer: ICloneable
     {
         public string Body { get; set; }
         public bool IsCorrect { get; set; }
@@ -20,6 +20,11 @@ namespace Examination
         public override string ToString()
         {
             return Body;
+        }
+
+        public object Clone()
+        {
+            return new Answer(this.Body, this.IsCorrect);
         }
     }
 }

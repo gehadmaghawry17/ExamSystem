@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Examination
 {
-    internal class AnswerList : List<Answer> // List<T>
+    internal class AnswerList : List<Answer> , ICloneable// List<T>
     {
         public void ShowAnswers()
         {
@@ -14,6 +14,14 @@ namespace Examination
             {
                 Console.WriteLine($"{ans.Body}");
             }
+        }
+
+        public object Clone()
+        {
+            AnswerList copy = new AnswerList();
+            foreach (var ans in this)
+                copy.Add(new Answer(ans.Body, ans.IsCorrect));
+            return copy;
         }
     }
 }
